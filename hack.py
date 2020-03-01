@@ -289,8 +289,10 @@ wait_for_input()
 
 file_system = {}
 file_system["/home"] = Directory("home", False)
+
 file_system["/home/level_1.goal"] = Goal("level_1.goal", "Whoo hoo, you can read!")
 file_system["/home"].contents.append(file_system["/home/level_1.goal"])
+
 current_directory_path = "/home"
 run()
 check_completion()
@@ -305,10 +307,13 @@ wait_for_input()
 
 file_system = {}
 file_system["/home"] = Directory("home", False)
+
 file_system["/home/desktop"] = Directory("desktop", False)
 file_system["/home"].contents.append(file_system["/home/desktop"])
+
 file_system["/home/desktop/level_2.goal"] = Goal("level_2.goal", "Almost to the end of level 2!")
 file_system["/home/desktop"].contents.append(file_system["/home/desktop/level_2.goal"])
+
 current_directory_path = "/home"
 run()
 check_completion()
@@ -322,14 +327,52 @@ wait_for_input()
 
 file_system = {}
 file_system["/home"] = Directory("home", False)
+
 file_system["/home/desktop"] = Directory("desktop", False)
 file_system["/home"].contents.append(file_system["/home/desktop"])
+
 file_system["/home/desktop/stuff"] = Directory("stuff", True, "1234")
 file_system["/home/desktop"].contents.append(file_system["/home/desktop/stuff"])
+
 file_system["/home/desktop/password.txt"] = File("password.txt", "stuff's password is: '1234'.", False)
 file_system["/home/desktop"].contents.append(file_system["/home/desktop/password.txt"])
+
 file_system["/home/desktop/stuff/level_3.goal"] = Goal("level_3.goal", "Final stretch!")
 file_system["/home/desktop/stuff"].contents.append(file_system["/home/desktop/stuff/level_3.goal"])
+current_directory_path = "/home"
+run()
+check_completion()
+
+# Level 4
+clear_screen()
+print("You seem to be getting the hang of this. I'm going to let you get right into level 4.")
+print()
+wait_for_input()
+
+file_system = {}
+file_system["/home"] = Directory("home", False)
+file_system["/home/desktop"] = Directory("desktop", False)
+file_system["/home"].contents.append(file_system["/home/desktop"])
+
+file_system["/home/desktop/l4bryn7h"] = Directory("l4bryn7h", False)
+file_system["/home/desktop"].contents.append(file_system["/home/desktop/l4bryn7h"])
+
+file_system["/home/desktop/l4bryn7h/instructions.txt"] = File("instructions.txt",\
+    "Welcome to the l4bryn7h...\nL4bryn7hs are mazes made of directories that come in " +\
+    "varying sizes.\nSomewhere in the l4bryn7h you'll find an unlocked text file\ncontaining " +\
+    "the password to the locked text file in the parent\ndirectory of the l4bryn7th. " +\
+    "Finding this will allow you to continue to the goal.\nGood luck!", False)
+file_system["/home/desktop/l4bryn7h"].contents.append(file_system["/home/desktop/l4bryn7h/instructions.txt"])
+
+file_system["/home/desktop/password.txt"] = File("password.txt", "stuff's password is 13524.", True, "l4bryn7h")
+file_system["/home/desktop"].contents.append(file_system["/home/desktop/password.txt"])
+
+file_system["/home/desktop/stuff"] = Directory("stuff", True, "13524")
+file_system["/home/desktop"].contents.append(file_system["/home/desktop/stuff"])
+
+file_system["/home/desktop/stuff/level_4.goal"] = Goal("level_4.goal", "Yay, level 4 complete!")
+file_system["/home/desktop/stuff"].contents.append(file_system["/home/desktop/stuff/level_4.goal"])
+
 current_directory_path = "/home"
 run()
 check_completion()
