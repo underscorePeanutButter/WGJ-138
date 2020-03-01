@@ -58,11 +58,30 @@ def change_directory(directory):
     global current_directory_path
 
     if directory == "..":
-        
+        split_path = current_directory_path.split("/")
+
+        if len(split_path) <= 2:
+            return
+
+        split_path = split_path[1:-1]
+
+        if len(split_path) > 1:
+            split_path = split_path.join("/")
+        else:
+            split_path = split_path[0]
+
+        split_path = "/" + split_path
+
+        current_directory_path = split_path
+        return
 
     for item in current_directory.contents:
         if item.name == directory:
             if type(item) == Directory:
+                if item.is_locked:
+                    print("Access denied.")
+                    return
+                    
                 current_directory_path += "/" + item.name
                 return
 
