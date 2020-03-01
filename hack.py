@@ -8,7 +8,7 @@ class Directory:
         self.is_locked = is_locked
         self.password = password
 
-    def access(self):
+    def unlock(self):
         if self.is_locked:
             attempted_password = input("Password: ")
 
@@ -29,7 +29,7 @@ class File:
         self.is_locked = is_locked
         self.password = password
 
-    def access(self):
+    def unlock(self):
         if self.is_locked:
             attempted_password = input("Password: ")
 
@@ -48,9 +48,14 @@ def clear_screen():
 def list_contents():
     for item in current_directory.contents:
         if type(item) == Directory:
-            print("D ", end="")
+            print("D", end="")
         elif type(item) == File:
-            print("F ", end="")
+            print("F", end="")
+
+        if item.is_locked:
+            print("L ", end="")
+        else:
+            print("U ", end="")
 
         print(item.name)
 
@@ -66,7 +71,7 @@ def change_directory(directory):
         split_path = split_path[1:-1]
 
         if len(split_path) > 1:
-            split_path = split_path.join("/")
+            split_path = "/".join(split_path)
         else:
             split_path = split_path[0]
 
@@ -81,11 +86,24 @@ def change_directory(directory):
                 if item.is_locked:
                     print("Access denied.")
                     return
-                    
+
                 current_directory_path += "/" + item.name
                 return
 
     print("That directory does not exist.")
+
+def read_file(file):
+    for item in current_directory.contents:
+        if item.name == file:
+            if type(item) == File:
+                if item.is_locked:
+                    print("Access denied.")
+                    return
+
+                print(item.contents)
+                return
+
+    print("That file does not exist.")
 
 file_system = {}
 
@@ -94,23 +112,44 @@ file_system["/home"] = Directory("home", False)
 file_system["/home/test_1"] = Directory("test_1", True, "1234")
 file_system["/home"].contents.append(file_system["/home/test_1"])
 
+file_system["/home/test_1/password.txt"] = File("password.txt", "The password for test_2 is: 'p.><*as?swor/d'", False)
+file_system["/home/test_1"].contents.append(file_system["/home/test_1/password.txt"])
+
+file_system["/home/test_1/test_2"] = Directory("test_2", True, "p.><*as?swor/d")
+file_system["/home/test_1"].contents.append(file_system["/home/test_1/test_2"])
+
 current_directory_path = "/home"
 
 clear_screen()
 
 while True:
-    current_directory = file_system[current_directory_path]
+    try:
+        current_directory = file_system[current_directory_path]
 
-    command = input(str(current_directory_path) + " - $ ").strip()
+        command = input(str(current_directory_path) + " - $ ").strip()
 
-    if command == "cls":
-        clear_screen()
+        if command == "cls":
+            clear_screen()
 
-    if command == "ls":
-        list_contents()
+        elif command == "ls":
+            list_contents()
 
-    if command.startswith("cd"):
-        split_command = command.split(" ")
-        change_directory(split_command[1])
+        elif command.startswith("cd"):
+            split_command = command.split(" ")
+            change_directory(split_command[1])
+
+        elif command.startswith("unlock"):
+            split_command = command.split(" ")
+            file_system[current_directory_path + "/" + split_command[1]].unlock()
+
+        elif command.startswith("read"):
+            split_command = command.split(" ")
+            read_file(split_command[1])
+
+        if command == "quit":
+            break
+
+    except:
+        print("Invalid syntax or name. Please try again.")
 
     print()
