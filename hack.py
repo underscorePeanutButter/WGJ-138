@@ -54,7 +54,35 @@ class Goal:
         print("This is not a locked file.")
 
 def main_menu():
-    pass
+    while True:
+        clear_screen()
+
+        print("------ PeanutButterGames presents ------")
+        print("---------- |   |  __   __ | / ----------")
+        print("---------- |---| |__| |   |/  ----------")
+        print("---------- |   | |  | |__ | \\ ----------")
+        print("------- For Weekly Game Jam #138 -------")
+        print()
+        print("1. Story Mode")
+        print("2. Random Mode")
+        print("3. Quit")
+        choice = input("Choice: ")
+
+        if choice == "1":
+            return
+
+        elif choice == "2":
+            pass
+
+        elif choice == "3":
+            sys.exit()
+
+        else:
+            print("That choice is invalid.")
+            wait_for_input()
+
+def wait_for_input():
+    input("Press enter to continue...")
 
 def check_completion():
     if level_completed == False:
@@ -136,6 +164,17 @@ def extract_file(file):
 
     print("That file doesn't exist or cannot be extracted.")
 
+def show_command_list():
+    print("Available Commands:")
+    print("  help    - displays this list")
+    print("  cls     - clears the screen")
+    print("  ls      - lists the contents of the current directory")
+    print("  cd      - changes the current directory (syntax: cd <directory name>)")
+    print("  unlock  - used to unlock locked files and directories (syntax: unlock <filename>)")
+    print("  read    - used to read the contents of a file (syntax: read <filename>)")
+    print("  extract - used to extract the goal of a level (syntax: extract <filename>)")
+    print("  quit    - ends the game")
+
 def run():
     global current_directory
     global level_completed
@@ -144,38 +183,44 @@ def run():
     clear_screen()
 
     while True:
-        try:
-            current_directory = file_system[current_directory_path]
+        current_directory = file_system[current_directory_path]
 
-            command = input(str(current_directory_path) + " - $ ").strip()
+        command = input(str(current_directory_path) + " - $ ").strip()
 
-            if command == "cls":
-                clear_screen()
+        if command == "cls":
+            clear_screen()
 
-            elif command == "ls":
-                list_contents()
+        elif command == "ls":
+            list_contents()
 
-            elif command.startswith("cd"):
-                split_command = command.split(" ")
-                change_directory(split_command[1])
+        elif command.startswith("cd"):
+            split_command = command.split(" ")
+            change_directory(split_command[1])
 
-            elif command.startswith("unlock"):
-                split_command = command.split(" ")
+        elif command.startswith("unlock"):
+            split_command = command.split(" ")
+            try:
                 file_system[current_directory_path + "/" + split_command[1]].unlock()
 
-            elif command.startswith("read"):
-                split_command = command.split(" ")
-                read_file(split_command[1])
+            except:
+                print("That is not a valid file or directory.")
 
-            elif command.startswith("extract"):
-                split_command = command.split(" ")
-                extract_file(split_command[1])
+        elif command.startswith("read"):
+            split_command = command.split(" ")
+            read_file(split_command[1])
 
-            if command == "quit":
-                return
+        elif command.startswith("extract"):
+            split_command = command.split(" ")
+            extract_file(split_command[1])
 
-        except:
-            print("Invalid syntax or name. Please try again.")
+        elif command == "quit":
+            check_completion()
+
+        elif command == "help":
+            show_command_list()
+
+        else:
+            print("Command not found. Use 'help' for a list of available commands.")
 
         print()
 
@@ -203,3 +248,67 @@ main_menu()
 # check_completion()
 
 # Level 1
+clear_screen()
+print("Hi there! Welcome to HACK. This is PeanutButterGames' first game. Hopefully you enjoy it!")
+print("Anyways, I'm _peanutButter. I'm going to give you a brief rundown of how things work in HACK.")
+print("You could probably call this a tutorial.")
+print()
+print("HACK is presented as a very minimalistic terminal. In fact, it runs directly in your")
+print("computer's terminal emulator, err, command prompt. Authentic, huh?")
+print()
+wait_for_input()
+clear_screen()
+print("HACK's 'story mode' is very simple. Your goal is to hunt down files ending with the")
+print("'.goal' extension scattered throughout a number of fabricated file systems. I didn't explain")
+print("that very well, but you'll understand soon enough.")
+print()
+print("In case you've never used a terminal before, let me explain what they're used for and how")
+print("they're used. Terminals use simple commands that, when used in tandem with other, similar")
+print("commands, let you carry out some pretty complex actions. Almost everything you can do with")
+print("your computer's graphical user interface can be done using its terminal emulator.")
+print()
+wait_for_input()
+clear_screen()
+print("There are 8 different commands that you can use in your HACK terminal. The next 'slide'")
+print("will explain each one's function.")
+print()
+wait_for_input()
+clear_screen()
+show_command_list()
+print()
+wait_for_input()
+clear_screen()
+print("Please note that the list shown in the last 'slide' can be viewed at any time using the")
+print("'help' command.")
+print()
+wait_for_input()
+clear_screen()
+print("Now that that's out of the way, I'll start up the game for you. Please enjoy!")
+print()
+wait_for_input()
+
+file_system = {}
+file_system["/home"] = Directory("home", False)
+file_system["/home/level_1.goal"] = Goal("level_1.goal", "Whoo hoo, you can read!")
+file_system["/home"].contents.append(file_system["/home/level_1.goal"])
+current_directory_path = "/home"
+run()
+check_completion()
+
+# Level 2
+clear_screen()
+print("Well done! If you're reading this, that means you've completed the first level.")
+print("That tells me that you're understanding the gist of the game. Don't celebrate")
+print("just yet, though... We're just getting started. Ready to jump into level 2?")
+print()
+wait_for_input()
+
+file_system = {}
+file_system["/home"] = Directory("home", False)
+file_system["/home/desktop"] = Directory("desktop", False)
+file_system["/home"].contents.append(file_system["/home/desktop"])
+file_system["/home/desktop/level_2.goal"] = Goal("level_2.goal", "Almost to the end of level 2!")
+file_system["/home/desktop"].contents.append(file_system["/home/desktop/level_2.goal"])
+current_directory_path = "/home"
+run()
+check_completion()
