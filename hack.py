@@ -312,3 +312,24 @@ file_system["/home/desktop"].contents.append(file_system["/home/desktop/level_2.
 current_directory_path = "/home"
 run()
 check_completion()
+
+# Level 3
+clear_screen()
+print("Nice! Things are going to start getting harder now. Get ready! Don't forget that")
+print("you can read the contents of a file with the 'read' command.")
+print()
+wait_for_input()
+
+file_system = {}
+file_system["/home"] = Directory("home", False)
+file_system["/home/desktop"] = Directory("desktop", False)
+file_system["/home"].contents.append(file_system["/home/desktop"])
+file_system["/home/desktop/stuff"] = Directory("stuff", True, "1234")
+file_system["/home/desktop"].contents.append(file_system["/home/desktop/stuff"])
+file_system["/home/desktop/password.txt"] = File("password.txt", "stuff's password is: '1234'.", False)
+file_system["/home/desktop"].contents.append(file_system["/home/desktop/password.txt"])
+file_system["/home/desktop/stuff/level_3.goal"] = Goal("level_3.goal", "Final stretch!")
+file_system["/home/desktop/stuff"].contents.append(file_system["/home/desktop/stuff/level_3.goal"])
+current_directory_path = "/home"
+run()
+check_completion()
