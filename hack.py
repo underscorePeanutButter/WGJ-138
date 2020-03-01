@@ -1,4 +1,5 @@
 import os
+import sys
 
 class Directory:
     def __init__(self, name, is_locked, password=None):
@@ -49,6 +50,16 @@ class Goal:
 
         self.is_locked = False
 
+    def unlock(self):
+        print("This is not a locked file.")
+
+def main_menu():
+    pass
+
+def check_completion():
+    if level_completed == False:
+        sys.exit()
+
 def clear_screen():
     os.system("cls")
 
@@ -58,6 +69,8 @@ def list_contents():
             print("D", end="")
         elif type(item) == File:
             print("F", end="")
+        elif type(item) == Goal:
+            print("G", end="")
 
         if item.is_locked:
             print("L ", end="")
@@ -102,7 +115,7 @@ def change_directory(directory):
 def read_file(file):
     for item in current_directory.contents:
         if item.name == file:
-            if type(item) == File:
+            if type(item) == File or type(item) == Goal:
                 if item.is_locked:
                     print("Access denied.")
                     return
@@ -113,13 +126,19 @@ def read_file(file):
     print("That file does not exist.")
 
 def extract_file(file):
+    global level_completed
+
     for item in current_directory.contents:
         if item.name == file:
             if type(item) == Goal:
                 level_completed = True
+                return
+
+    print("That file doesn't exist or cannot be extracted.")
 
 def run():
     global current_directory
+    global level_completed
 
     level_completed = False
     clear_screen()
@@ -153,7 +172,7 @@ def run():
                 extract_file(split_command[1])
 
             if command == "quit":
-                sys.exit()
+                return
 
         except:
             print("Invalid syntax or name. Please try again.")
@@ -164,15 +183,23 @@ def run():
             return
 
 current_directory = None
+level_completed = False
+
+main_menu()
+
+# Test level
+# file_system = {}
+# file_system["/home"] = Directory("home", False)
+# file_system["/home/test_1"] = Directory("test_1", True, "1234")
+# file_system["/home"].contents.append(file_system["/home/test_1"])
+# file_system["/home/test_1/password.txt"] = File("password.txt", "The password for test_2 is: 'p.><*as?swor/d'", False)
+# file_system["/home/test_1"].contents.append(file_system["/home/test_1/password.txt"])
+# file_system["/home/test_1/test_2"] = Directory("test_2", True, "p.><*as?swor/d")
+# file_system["/home/test_1"].contents.append(file_system["/home/test_1/test_2"])
+# file_system["/home/test_1/test_2/level_1.goal"] = Goal("level_1.goal", "Don't extract me? pls")
+# file_system["/home/test_1/test_2"].contents.append(file_system["/home/test_1/test_2/level_1.goal"])
+# current_directory_path = "/home"
+# run()
+# check_completion()
 
 # Level 1
-file_system = {}
-file_system["/home"] = Directory("home", False)
-file_system["/home/test_1"] = Directory("test_1", True, "1234")
-file_system["/home"].contents.append(file_system["/home/test_1"])
-file_system["/home/test_1/password.txt"] = File("password.txt", "The password for test_2 is: 'p.><*as?swor/d'", False)
-file_system["/home/test_1"].contents.append(file_system["/home/test_1/password.txt"])
-file_system["/home/test_1/test_2"] = Directory("test_2", True, "p.><*as?swor/d")
-file_system["/home/test_1"].contents.append(file_system["/home/test_1/test_2"])
-current_directory_path = "/home"
-run()
