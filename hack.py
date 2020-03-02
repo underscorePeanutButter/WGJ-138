@@ -195,23 +195,39 @@ def run():
 
         elif command.startswith("cd"):
             split_command = command.split(" ")
-            change_directory(split_command[1])
+            if len(split_command) <= 1:
+                print("Invalid syntax. Use 'help' to view correct syntaxes.")
+
+            else:
+                change_directory(split_command[1])
 
         elif command.startswith("unlock"):
             split_command = command.split(" ")
-            try:
-                file_system[current_directory_path + "/" + split_command[1]].unlock()
+            if len(split_command) <= 1:
+                print("Invalid syntax. Use 'help' to view correct syntaxes.")
 
-            except:
-                print("That is not a valid file or directory.")
+            else:
+                try:
+                    file_system[current_directory_path + "/" + split_command[1]].unlock()
+
+                except:
+                    print("That is not a valid file or directory.")
 
         elif command.startswith("read"):
             split_command = command.split(" ")
-            read_file(split_command[1])
+            if len(split_command) <= 1:
+                print("Invalid syntax. Use 'help' to view correct syntaxes.")
+
+            else:
+                read_file(split_command[1])
 
         elif command.startswith("extract"):
             split_command = command.split(" ")
-            extract_file(split_command[1])
+            if len(split_command) <= 1:
+                print("Invalid syntax. Use 'help' to view correct syntaxes.")
+
+            else:
+                extract_file(split_command[1])
 
         elif command == "quit":
             check_completion()
