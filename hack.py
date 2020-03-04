@@ -1,5 +1,6 @@
 import os
 import sys
+import random
 
 class Directory:
     def __init__(self, name, is_locked, password=None):
@@ -63,16 +64,18 @@ def main_menu():
         print("---------- |   | |  | |__ | \\ ----------")
         print("------- For Weekly Game Jam #138 -------")
         print()
-        print("1. Story Mode")
-        print("2. Random Mode")
+        print("1. 'Story' Mode (work in progress)")
+        print("2. 'Random' Mode (currently unavailable)")
         print("3. Quit")
         choice = input("Choice: ")
+        print()
 
         if choice == "1":
             return
 
         elif choice == "2":
-            pass
+            print("Random mode is still in progress. Please check back in later.")
+            wait_for_input()
 
         elif choice == "3":
             sys.exit()
@@ -82,6 +85,7 @@ def main_menu():
             wait_for_input()
 
 def wait_for_input():
+    print()
     input("Press enter to continue...")
 
 def check_completion():
@@ -243,8 +247,35 @@ def run():
         if level_completed:
             return
 
+def tutorial():
+    pass
+
+def random_mode():
+    while True:
+        clear_screen()
+        generate_filesystem()
+        print("Level, start!")
+        wait_for_input()
+
+
+def generate_filesystem():
+    global file_system
+    print("Generating file system...")
+
+    file_system = {}
+    file_system["/home"] = Directory("home", False)
+
+    for i in range(random.randint(0, 3)):
+        file_name = "".join([random.choice(characters) for i in range(random.randint(2, 8))])
+        file_system["/home/" + file_name] = Directory(file_name, False)
+    print(file_system)
+
 current_directory = None
 level_completed = False
+characters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",\
+              "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",\
+              "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "_"]
+file_system = {}
 
 main_menu()
 
@@ -271,7 +302,6 @@ print("You could probably call this a tutorial.")
 print()
 print("HACK is presented as a very minimalistic terminal. In fact, it runs directly in your")
 print("computer's terminal emulator, err, command prompt. Authentic, huh?")
-print()
 wait_for_input()
 clear_screen()
 print("HACK's 'story mode' is very simple. Your goal is to hunt down files ending with the")
@@ -282,25 +312,23 @@ print("In case you've never used a terminal before, let me explain what they're 
 print("they're used. Terminals use simple commands that, when used in tandem with other, similar")
 print("commands, let you carry out some pretty complex actions. Almost everything you can do with")
 print("your computer's graphical user interface can be done using its terminal emulator.")
-print()
 wait_for_input()
 clear_screen()
 print("There are 8 different commands that you can use in your HACK terminal. The next 'slide'")
 print("will explain each one's function.")
-print()
 wait_for_input()
 clear_screen()
 show_command_list()
-print()
 wait_for_input()
 clear_screen()
 print("Please note that the list shown in the last 'slide' can be viewed at any time using the")
 print("'help' command.")
-print()
 wait_for_input()
 clear_screen()
 print("Now that that's out of the way, I'll start up the game for you. Please enjoy!")
-print()
+wait_for_input()
+clear_screen()
+print("Level 1")
 wait_for_input()
 
 file_system = {}
@@ -316,9 +344,10 @@ check_completion()
 # Level 2
 clear_screen()
 print("Well done! If you're reading this, that means you've completed the first level.")
-print("That tells me that you're understanding the gist of the game. Don't celebrate")
-print("just yet, though... We're just getting started. Ready to jump into level 2?")
-print()
+print("That tells me that you're understanding the gist of the game.")
+wait_for_input()
+clear_screen()
+print("Level 2")
 wait_for_input()
 
 file_system = {}
@@ -338,7 +367,9 @@ check_completion()
 clear_screen()
 print("Nice! Things are going to start getting harder now. Get ready! Don't forget that")
 print("you can read the contents of a file with the 'read' command.")
-print()
+wait_for_input()
+clear_screen()
+print("Level 3")
 wait_for_input()
 
 file_system = {}
@@ -361,29 +392,58 @@ check_completion()
 
 # Level 4
 clear_screen()
-print("You seem to be getting the hang of this. I'm going to let you get right into level 4.")
-print()
+print("Level 4")
 wait_for_input()
 
 file_system = {}
 file_system["/home"] = Directory("home", False)
+
 file_system["/home/desktop"] = Directory("desktop", False)
 file_system["/home"].contents.append(file_system["/home/desktop"])
 
-file_system["/home/desktop/l4bryn7h"] = Directory("l4bryn7h", False)
-file_system["/home/desktop"].contents.append(file_system["/home/desktop/l4bryn7h"])
+file_system["/home/desktop/passchars"] = Directory("passchars", False)
+file_system["/home/desktop"].contents.append(file_system["/home/desktop/passchars"])
 
-file_system["/home/desktop/l4bryn7h/instructions.txt"] = File("instructions.txt",\
-    "Welcome to the l4bryn7h...\nL4bryn7hs are mazes made of directories that come in " +\
-    "varying sizes.\nSomewhere in the l4bryn7h you'll find an unlocked text file\ncontaining " +\
-    "the password to the locked text file in the parent\ndirectory of the l4bryn7th. " +\
-    "Finding this will allow you to continue to the goal.\nGood luck!", False)
-file_system["/home/desktop/l4bryn7h"].contents.append(file_system["/home/desktop/l4bryn7h/instructions.txt"])
+file_system["/home/desktop/passchars/1"] = Directory("1", False)
+file_system["/home/desktop/passchars"].contents.append(file_system["/home/desktop/passchars/1"])
 
-file_system["/home/desktop/password.txt"] = File("password.txt", "stuff's password is 13524.", True, "l4bryn7h")
+file_system["/home/desktop/passchars/1/passchar.txt"] = File("passchar.txt", "4", False)
+file_system["/home/desktop/passchars/1"].contents.append(file_system["/home/desktop/passchars/1/passchar.txt"])
+
+file_system["/home/desktop/passchars/1/3"] = Directory("3", False)
+file_system["/home/desktop/passchars/1"].contents.append(file_system["/home/desktop/passchars/1/3"])
+
+file_system["/home/desktop/passchars/1/5"] = Directory("5", False)
+file_system["/home/desktop/passchars/1"].contents.append(file_system["/home/desktop/passchars/1/5"])
+
+file_system["/home/desktop/passchars/1/3/passchar.txt"] = File("passchar.txt", "8", False)
+file_system["/home/desktop/passchars/1/3"].contents.append(file_system["/home/desktop/passchars/1/3/passchar.txt"])
+
+file_system["/home/desktop/passchars/1/5/passchar.txt"] = File("passchar.txt", "9", False)
+file_system["/home/desktop/passchars/1/5"].contents.append(file_system["/home/desktop/passchars/1/5/passchar.txt"])
+
+file_system["/home/desktop/passchars/2"] = Directory("2", False)
+file_system["/home/desktop/passchars"].contents.append(file_system["/home/desktop/passchars/2"])
+
+file_system["/home/desktop/passchars/2/passchar.txt"] = File("passchar.txt", "3", False)
+file_system["/home/desktop/passchars/2"].contents.append(file_system["/home/desktop/passchars/2/passchar.txt"])
+
+file_system["/home/desktop/passchars/2/4"] = Directory("4", False)
+file_system["/home/desktop/passchars/2"].contents.append(file_system["/home/desktop/passchars/2/4"])
+
+file_system["/home/desktop/passchars/2/6"] = Directory("6", False)
+file_system["/home/desktop/passchars/2"].contents.append(file_system["/home/desktop/passchars/2/6"])
+
+file_system["/home/desktop/passchars/2/4/passchar.txt"] = File("passchar.txt", "1", False)
+file_system["/home/desktop/passchars/2/4"].contents.append(file_system["/home/desktop/passchars/2/4/passchar.txt"])
+
+file_system["/home/desktop/passchars/2/6/passchar.txt"] = File("passchar.txt", "0", False)
+file_system["/home/desktop/passchars/2/6"].contents.append(file_system["/home/desktop/passchars/2/6/passchar.txt"])
+
+file_system["/home/desktop/password.txt"] = File("password.txt", "stuff's password is 912688.", True, "438190")
 file_system["/home/desktop"].contents.append(file_system["/home/desktop/password.txt"])
 
-file_system["/home/desktop/stuff"] = Directory("stuff", True, "13524")
+file_system["/home/desktop/stuff"] = Directory("stuff", True, "912688")
 file_system["/home/desktop"].contents.append(file_system["/home/desktop/stuff"])
 
 file_system["/home/desktop/stuff/level_4.goal"] = Goal("level_4.goal", "Yay, level 4 complete!")
@@ -392,3 +452,17 @@ file_system["/home/desktop/stuff"].contents.append(file_system["/home/desktop/st
 current_directory_path = "/home"
 run()
 check_completion()
+
+# Finish
+clear_screen()
+print("Congrats! You've made it to the end of the 'story' mode as it is right")
+print("now. Hopefully you enjoyed it!")
+print()
+print("Also, I plan on working on this a bunch more in the future, and hopefully")
+print("crank out a full length story mode I can be proud of with a ton of different")
+print("and unique 'hacker'-esque mechanics.")
+print()
+print("Don't forget to check back in later if you're interested in seeing the")
+print("improvements I make and puzzles/mechanics I add!")
+wait_for_input()
+clear_screen()
